@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class VerticalLine : Figure
+    class Snake : Figure
     {
-        public VerticalLine(int yUp, int yDown, int x, char sym)
+        public Snake(Point tail, int length, Direction direction)
         {
-            for (int y = yUp; y <= yDown; y++)
+            for (int i = 0; i < length; i++)
             {
-                Point p = new Point(x, y, sym);
+                Point p = new Point(tail);
+                p.Move(i, direction);
                 pList.Add(p);
             }
         }

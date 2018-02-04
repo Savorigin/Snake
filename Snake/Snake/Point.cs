@@ -44,12 +44,18 @@ namespace Snake
             {
                 y = y + offset;
             }
+            Draw();
         }
 
         internal void Clear()
         {
             sym = ' ';
             Draw();
+        }
+
+        public bool IsHit(Point newPoint)
+        {
+            return x == newPoint.x && y == newPoint.y;
         }
 
         public void Draw()

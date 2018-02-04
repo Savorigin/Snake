@@ -5,7 +5,7 @@ namespace Snake
 {
     class Snake : Figure
     {
-        Direction direction;
+        private Direction direction;
 
         public Snake(Point tail, int length, Direction _direction)
         {
@@ -18,7 +18,7 @@ namespace Snake
             }
         }
 
-        internal void Move()
+        public void Move()
         {
             Point tail = pList.First();
             pList.Remove(tail);
@@ -49,7 +49,7 @@ namespace Snake
                 direction = Direction.DOWN;
         }
 
-        internal bool IsHitTail()
+        public bool IsHitTail()
         {
             var head = pList.Last();
             for (int i = 0; i < pList.Count - 2; i++)
@@ -60,7 +60,7 @@ namespace Snake
             return false;
         }
 
-        internal bool Eat(Point food)
+        public bool Eat(Point food)
         {
             Point head = GetNextPoint();
             if (head.IsHit(food))
@@ -71,9 +71,7 @@ namespace Snake
                 return true;
             }
             else
-            {
                 return false;
-            }
         }
     }
 }

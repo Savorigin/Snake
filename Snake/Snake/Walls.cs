@@ -4,7 +4,7 @@ namespace Snake
 {
     class Walls
     {
-        List<Figure> wallList;
+        private List<Figure> wallList;
 
         public Walls(int mapWidth, int mapHeight)
         {
@@ -21,7 +21,7 @@ namespace Snake
             wallList.Add(downLine);
         }
 
-        internal bool IsHit(Figure figure)
+        public bool IsHit(Figure figure)
         {
             foreach (var wall in wallList)
             {

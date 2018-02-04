@@ -47,7 +47,7 @@ namespace Snake
             Draw();
         }
 
-        internal void Clear()
+        public void Clear()
         {
             sym = ' ';
             Draw();

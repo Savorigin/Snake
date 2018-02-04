@@ -20,7 +20,7 @@ namespace Snake
             }
         }
 
-        internal bool IsHit(Figure figure)
+        public bool IsHit(Figure figure)
         {
             foreach (var p in pList)
             {

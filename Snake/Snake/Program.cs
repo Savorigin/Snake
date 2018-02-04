@@ -1,56 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snake
 {
     class Program
     {
-        static void Initialize()
+        const int WIDTH = 80;
+        const int HEIGHT = 25;
+        const int SPEED = 100;
+
+        static void InitializeScreen()
         {
-            Console.SetBufferSize(80, 25);
+            // Установка размера
+            Console.SetBufferSize(WIDTH, HEIGHT);
+
+            // Настройка рамочки
+            VerticalLine leftLine = new VerticalLine(0, HEIGHT - 1, 0, '|');
+            VerticalLine rightLine = new VerticalLine(0, HEIGHT - 1, WIDTH - 2, '|');
+            HorizontalLine upLine = new HorizontalLine(0, WIDTH - 2, 0, '-');
+            HorizontalLine downLine = new HorizontalLine(0, WIDTH - 2, HEIGHT - 1, '-');
+
+            List<Figure> figures = new List<Figure>();
+
+            figures.Add(leftLine);
+            figures.Add(rightLine);
+            figures.Add(upLine);
+            figures.Add(downLine);
 
             // Отрисовка рамочки
-            HorizontalLine upLine = new HorizontalLine(0, 78, 0, '+');
-            HorizontalLine downLine = new HorizontalLine(0, 78, 24, '+');
-            VerticalLine leftLine = new VerticalLine(0, 24, 0, '+');
-            VerticalLine rightLine = new VerticalLine(0, 24, 78, '+');
+            foreach (Figure figure in figures)
+            {
+                Draw(figure);
+            }
+        }
 
-            upLine.Draw();
-            downLine.Draw();
-            leftLine.Draw();
-            rightLine.Draw();
+        static Snake InitializeSnake()
+        {
+            // Отрисовка точек змейки
+            Point p = new Point(4, 5, '*');
+            Figure fSnake = new Snake(p, 4, Direction.RIGHT);
+            Draw(fSnake);
+            return (Snake)fSnake;
+        }
+
+        static void Draw(Figure figure)
+        {
+            figure.Draw();
         }
 
         static void Main(string[] args)
         {
-            Initialize();
+            // Инициализация
+            InitializeScreen();
+            Snake snake = InitializeSnake();
 
-            // Отрисовка точек
-            Point p = new Point(4, 5, '*');
-            Snake snake = new Snake(p, 4, Direction.RIGHT);
-            snake.Draw();
-
-            FoodCreator foodCreator = new FoodCreator(80, 25, '$');
+            // Создание еды
+            FoodCreator foodCreator = new FoodCreator(WIDTH, HEIGHT, '$');
             Point food = foodCreator.CreateFood();
-            //food.Draw();
 
             while (true)
             {
                 if (snake.Eat(food))
-                {
                     food = foodCreator.CreateFood();
-                    //food.Draw();
-                }
                 else
-                {
                     snake.Move();
-                }
 
-                Thread.Sleep(100);
+                Thread.Sleep(SPEED);
 
                 if (Console.KeyAvailable)
                 {

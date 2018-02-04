@@ -10,37 +10,25 @@ namespace Snake
         const int HEIGHT = 25;
         const int SPEED = 100;
 
-        static void InitializeScreen()
+        static Walls InitializeScreen()
         {
             // Установка размера
             Console.SetBufferSize(WIDTH, HEIGHT);
 
-            // Настройка рамочки
-            VerticalLine leftLine = new VerticalLine(0, HEIGHT - 1, 0, '|');
-            VerticalLine rightLine = new VerticalLine(0, HEIGHT - 1, WIDTH - 2, '|');
-            HorizontalLine upLine = new HorizontalLine(0, WIDTH - 2, 0, '-');
-            HorizontalLine downLine = new HorizontalLine(0, WIDTH - 2, HEIGHT - 1, '-');
+            Walls walls = new Walls(WIDTH, HEIGHT);
+            walls.Draw();
 
-            List<Figure> figures = new List<Figure>();
-
-            figures.Add(leftLine);
-            figures.Add(rightLine);
-            figures.Add(upLine);
-            figures.Add(downLine);
-
-            // Отрисовка рамочки
-            foreach (Figure figure in figures)
-            {
-                Draw(figure);
-            }
+            return walls;
         }
 
         static Snake InitializeSnake()
         {
             // Отрисовка точек змейки
             Point p = new Point(4, 5, '*');
+
             Figure fSnake = new Snake(p, 4, Direction.RIGHT);
-            Draw(fSnake);
+            fSnake.Draw();
+
             return (Snake)fSnake;
         }
 
@@ -52,7 +40,7 @@ namespace Snake
         static void Main(string[] args)
         {
             // Инициализация
-            InitializeScreen();
+            Walls walls = InitializeScreen();
             Snake snake = InitializeSnake();
 
             // Создание еды
@@ -61,6 +49,13 @@ namespace Snake
 
             while (true)
             {
+                if (walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    Console.WriteLine("Game over");
+                    Console.ReadLine();
+                    break;
+                }
+
                 if (snake.Eat(food))
                     food = foodCreator.CreateFood();
                 else
@@ -71,6 +66,8 @@ namespace Snake
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
+                    if (key.Key == ConsoleKey.Escape)
+                        break;
                     snake.HandleKey(key.Key);
                 }
             }
